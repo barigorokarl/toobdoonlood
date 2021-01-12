@@ -1,0 +1,6 @@
+version: '3'
+backend:
+  imagename: toobdoonlood:latest
+  build: .
+  ports:
+    - "8001:8001"

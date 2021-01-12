@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Toobdoonlood</title>
+</head>
+<body>
+    <form action="/toob-dl/toob" method="post">
+        <label>
+            Youtube URL
+            <input type="url" name="url">
+        </label>
+        <label>
+            Gesamte Playlist laden
+            <input type="checkbox" name="playlist">
+        </label>
+        <button type="submit">Download MP3</button>
+    </form>
+<ul>
+    {% for download in existing %}
+    <li>
+        <a href="/toob-dl/{{download._filename}}" target="_blank">{{download.fulltitle}}</a>
+    </li>
+    {% endfor %}
+
+</ul>
+</body>
+</html>
