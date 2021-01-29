@@ -1,0 +1,139 @@
+@font-face {
+    font-family: 'lazer84';
+    src: url('/static/Lazer84.ttf');
+}
+
+body {
+    background-color:deeppink;
+    font-family: sans-serif;
+}
+
+header,
+main {
+    max-width: 1000px;
+    margin: 50px auto;
+}
+
+header {
+    transform-origin: 50% 50%;
+    text-align: center;
+    font-family: lazer84, sans-serif;
+}
+
+form {
+    display: block;
+    background: aqua;
+    line-height: 1em;
+    padding: 1em 0 0 1em;
+    border: 10px solid yellow;
+    border-radius: 6px;
+}
+
+label {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 1em 0;
+    line-height: 1.5em;
+    font-size: 1.125em;
+}
+
+label span {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+input[type=url] {
+    display: inline-block;
+    width: 70%;
+}
+
+input[type=checkbox] {
+    vertical-align: top;
+}
+
+button {
+    font-family: lazer84, sans-serif;
+    margin: 1em auto 1em auto;
+    font-size: 2em;
+    display: block;
+    background-color: darkslateblue;
+    color: yellow;
+    border: 10px solid yellow;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.spinner {
+    display: inline-block;
+    animation: spin1 0.6s infinite ease-in-out;
+    /*animation: spin1 1s infinite cubic-bezier(0,.43,1,.67);*/
+}
+
+.scaler {
+    display: block;
+    animation: scale1 1.5s infinite running;
+    /*animation: scale1 1.5s infinite cubic-bezier(0,.43,1,.67);*/
+}
+
+.color-cylcer {
+    display: block;
+    animation: colorcycle 1s infinite ease-in-out;
+    /*animation: scale1 1.5s infinite cubic-bezier(0,.43,1,.67);*/
+}
+
+@keyframes spin1 {
+    0% { transform: rotate(10deg);}
+    50% { transform: rotate(-10deg);}
+    100% { transform: rotate(10deg);}
+}
+
+@keyframes scale1 {
+    0% { transform: scale(1, 1);}
+    50% { transform: scale(1.7, 1.7);}
+    100% { transform: scale(1, 1);}
+}
+
+@keyframes colorcycle {
+    0% { color: violet}
+    25% { color: yellow}
+    50% { color: lawngreen}
+    75% { color: aqua}
+    100% { color: violet}
+}
+
+.loading {
+    animation: transparenter 1s infinite ease-in-out;
+    cursor: default;
+}
+
+@keyframes transparenter {
+    0% {opacity: 1}
+    50% {opacity: 0.5}
+    100% {opacity: 1}
+}
+
+ul {
+    list-style: none inside;
+    background-color: darkslateblue;
+    display: block;
+    max-width: 1000px;
+    margin: 1em auto 0;
+    border-radius: 6px;
+    padding: 4px 0 4px;
+}
+
+li {
+    display: block;
+    line-height: 2em;
+}
+
+li a {
+    font-family: sans-serif;
+    color: darkslateblue;
+    text-decoration: none;
+    display: block;
+    background-color: yellow;
+    margin: 4px 0;
+    padding: 0 10px;
+}
