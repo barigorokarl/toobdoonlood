@@ -1,22 +1,19 @@
-
 use rocket::request::Form;
 use url::Url;
 use std::process::Command;
 use rocket::response::Redirect;
-use regex::Regex;
-use rocket::http::{Cookies, Cookie, SameSite};
-use uuid::Uuid;
-use time::Duration;
+use rocket::http::{Cookies};
 
 #[derive(FromForm, Debug)]
 pub struct ToobDl {
     url: String,
     playlist: bool,
+    quality: i8,
 }
 
 #[post("/toob", data = "<form>")]
 pub fn toob_dl(form: Form<ToobDl>, mut cookies: Cookies) -> Redirect {
-    let mut playlist: String;
+    let playlist: String;
 
     let sid:String = match cookies.get_private("session") {
         Some(c) => c.value().to_string(),
@@ -32,11 +29,20 @@ pub fn toob_dl(form: Form<ToobDl>, mut cookies: Cookies) -> Redirect {
             playlist = format!("--no-playlist");
         }
 
+        let quality:i8;
+        if form.quality == 10 {
+            quality = 0;
+        } else {
+            quality = 10 - form.quality;
+        }
+
+        println!("--audio-quality={}", quality);
+
         let o = Command::new("youtube-dl")
             .arg("--no-mtime")
             .arg(playlist)
             .arg("--extract-audio")
-            .arg("--audio-quality=3")
+            .arg(format!("--audio-quality={}", quality))
             .arg("--audio-format=mp3")
             .arg("-o")
             .arg(format!("{}/%(title)s.mp3", the_dir))

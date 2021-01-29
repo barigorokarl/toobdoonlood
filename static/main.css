@@ -1,17 +1,22 @@
 @font-face {
     font-family: 'lazer84';
-    src: url('/static/Lazer84.ttf');
+    src: url('/toob-dl/static/Lazer84.ttf');
+}
+
+@font-face {
+    font-family: 'vcr-mono';
+    src: url('/toob-dl/static/VCR_OSD_MONO_1.001.ttf');
 }
 
 body {
     background-color:deeppink;
-    font-family: sans-serif;
+    font-family: vcr-mono, sans-serif;
 }
 
 header,
 main {
     max-width: 1000px;
-    margin: 50px auto;
+    margin: 50px auto 20px;
 }
 
 header {
@@ -44,12 +49,29 @@ label span {
 }
 
 input[type=url] {
-    display: inline-block;
-    width: 70%;
+    display: block;
+    width: 95%;
+    border: 3px solid yellow;
+    font-size: 2em;
+}
+
+input[type=url]:invalid {
+    border: 3px solid saddlebrown;
 }
 
 input[type=checkbox] {
-    vertical-align: top;
+    vertical-align: bottom;
+}
+
+#dl-playlist {
+    display: block;
+    max-height: 2em;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+#dl-playlist.hidden {
+    max-height: 0;
 }
 
 button {
@@ -113,6 +135,14 @@ button {
     100% {opacity: 1}
 }
 
+.usage {
+    border-radius: 4px;
+    margin-top: 15px;
+    background-color: darkslateblue;
+    color: yellow;
+    padding: 10px;
+}
+
 ul {
     list-style: none inside;
     background-color: darkslateblue;
@@ -136,4 +166,26 @@ li a {
     background-color: yellow;
     margin: 4px 0;
     padding: 0 10px;
+}
+
+.quality-container {
+    position: relative;
+}
+
+.quality {
+    position: absolute;
+    width: 400px;
+    left: calc(50% - 200px);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#quality-slider {
+    margin-top:20px;
+    width: 400px;
+}
+
+.quality.shown {
+    opacity: 1;
+    transition: opacity 0s;
 }
