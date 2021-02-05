@@ -1,11 +1,13 @@
 function start() {
     const qualitySlider = document.getElementById('quality-slider');
-    qualitySlider.addEventListener('input', () => {
+    const qualityChange = () => {
         document.querySelectorAll('.quality.shown').forEach((e) => {
             e.classList.remove('shown')
         });
         document.getElementById('quality-' + qualitySlider.value).classList.add('shown');
-    });
+    };
+    qualitySlider.addEventListener('input', qualityChange);
+    qualityChange();
     const url = document.getElementById('the_url');
     let urlPlaceholder = url.getAttribute('placeholder')
     url.addEventListener('focus', () => {

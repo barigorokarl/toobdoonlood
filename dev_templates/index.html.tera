@@ -26,7 +26,7 @@
                 <span id="quality-9" class="quality">Besserer</span>
                 <span id="quality-10" class="quality">Bestens</span>
             </span>
-            <input type="range" min="2" max="10" value="5" name="quality" id="quality-slider">
+            <input type="range" min="2" max="10" value="6" name="quality" id="quality-slider">
         </label>
         <label id="dl-playlist" class="hidden">
             Gesamte Playlist laden
@@ -35,7 +35,7 @@
         <button type="submit" onclick="this.classList.add('loading');this.setAttribute('disabled', true);">Download MP3</button>
     </form>
     <div class="usage">
-        Die Dateien bleiben in diesem Browser maximal einen Tag verfügbar. Wechselt man den Browser oder kommt später wieder, sind die Dateien weg.
+        Die Dateien bleiben in diesem Browser maximal zwei Stunden verfügbar. Wechselt man den Browser oder kommt später wieder, sind die Dateien weg.
     </div>
     <ul>
         {% for download in existing %}

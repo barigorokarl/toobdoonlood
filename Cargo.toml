@@ -19,6 +19,7 @@ regex = "1.4.3"
 itertools = "0.10.0"
 uuid = { version="0.8.2", features = ["v4"] }
 time = "0.1.44"
+job_scheduler = "1.2.1"
 
 [dependencies.rocket_contrib]
 version = "0.4.6"

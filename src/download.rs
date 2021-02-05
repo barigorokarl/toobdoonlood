@@ -36,8 +36,6 @@ pub fn toob_dl(form: Form<ToobDl>, mut cookies: Cookies) -> Redirect {
             quality = 10 - form.quality;
         }
 
-        println!("--audio-quality={}", quality);
-
         let o = Command::new("youtube-dl")
             .arg("--no-mtime")
             .arg(playlist)
@@ -50,6 +48,11 @@ pub fn toob_dl(form: Form<ToobDl>, mut cookies: Cookies) -> Redirect {
             .output().expect("output");
 
         println!("{}", String::from_utf8(o.stdout).unwrap());
+
+        // if !form.playlist {
+        //     return Redirect::to("/toob-dl/dl/latest");
+        // }
+
     }
 
     Redirect::to("/toob-dl/")

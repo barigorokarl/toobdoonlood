@@ -56,7 +56,7 @@ input[type=url] {
 }
 
 input[type=url]:invalid {
-    border: 3px solid saddlebrown;
+    border: 3px solid red;
 }
 
 input[type=checkbox] {

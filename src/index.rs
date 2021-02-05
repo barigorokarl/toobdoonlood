@@ -5,7 +5,7 @@ use rocket::{Response};
 use std::fs::{File};
 use std::io::{BufReader, Read, Cursor};
 use rocket::http::{ContentType, Cookie, Cookies, SameSite, Status};
-use rocket::http::hyper::header::{ContentDisposition, DispositionType, DispositionParam, Charset};
+use rocket::http::hyper::header::{ContentDisposition, DispositionType, DispositionParam, Charset, Location};
 use std::fs;
 use itertools::Itertools;
 use uuid::Uuid;
@@ -27,7 +27,7 @@ pub fn index(mut cookies: Cookies) -> Template {
                 .http_only(true)
                 .secure(true)
                 .same_site(SameSite::Strict)
-                .max_age(Duration::days(1))
+                .max_age(Duration::hours(2))
                 .finish();
             cookies.add_private(c);
             id
@@ -38,6 +38,12 @@ pub fn index(mut cookies: Cookies) -> Template {
 
     fs::create_dir_all(the_dir.clone()).expect("create directory");
 
+    let d = dir_contents(the_dir);
+    let context = IndexGet { existing: d};
+    Template::render("index", &context)
+}
+
+fn dir_contents(the_dir: String) -> Vec<String> {
     let d = fs::read_dir(the_dir)
         .expect("something to read")
         .filter_map(|v| v.ok())
@@ -47,9 +53,7 @@ pub fn index(mut cookies: Cookies) -> Template {
         ))
         .map(|x| x.file_name().to_str().expect("string").to_owned())
         .collect::<Vec<String>>();
-
-    let context = IndexGet { existing: d};
-    Template::render("index", &context)
+    d
 }
 
 #[get("/dl/<id>")]
@@ -61,16 +65,27 @@ pub fn download<'a>(id: String, mut cookies: Cookies) -> Response<'a> {
     };
 
     if sid == "nope" {
-        let er =  Response::build()
-            .status(Status::NotFound)
-            .finalize();
+        let er = not_found_response();
         return er;
     }
 
     let the_dir = format!("./dl/{}", sid);
-
-    let id = format!("{}/{}", the_dir, id);
-    let f = File::open(&id).expect("open file");
+    let filepath :String;
+    if id == "latest" {
+        match dir_contents(the_dir.clone()).first() {
+            Some(e) => {
+                println!("{}", e.to_string());
+                filepath = format!("{}/{}", &the_dir, e);
+            },
+            None => {
+                let er = not_found_response();
+                return er;
+            }
+        }
+    } else {
+        filepath = format!("{}/{}", the_dir, id);
+    }
+    let f = File::open(&filepath).expect("open file");
     let mut reader = BufReader::new(f);
     let mut buf = Vec::new();
     let _b = reader.read_to_end(&mut buf).expect("read file");
@@ -78,6 +93,7 @@ pub fn download<'a>(id: String, mut cookies: Cookies) -> Response<'a> {
 
     let r = Response::build()
         .header(ContentType::Binary)
+        .header(Location("/toob-dl/".to_string()))
         .header_adjoin(ContentDisposition {
             disposition: DispositionType::Attachment,
             parameters: vec![DispositionParam::Filename(
@@ -89,4 +105,11 @@ pub fn download<'a>(id: String, mut cookies: Cookies) -> Response<'a> {
         .sized_body(cursor)
         .finalize();
     r
+}
+
+fn not_found_response() -> Response<'static> {
+    let er = Response::build()
+        .status(Status::NotFound)
+        .finalize();
+    er
 }
