@@ -92,14 +92,13 @@ pub fn download<'a>(id: String, mut cookies: Cookies) -> Response<'a> {
     let cursor = Cursor::new(buf);
 
     let r = Response::build()
-        .header(ContentType::Binary)
-        .header(Location("/toob-dl/".to_string()))
+        .header(ContentType::MPEG)
         .header_adjoin(ContentDisposition {
             disposition: DispositionType::Attachment,
             parameters: vec![DispositionParam::Filename(
                 Charset::Iso_8859_1,
                 None,
-                format!("{}", id).into(),
+                format!("{}", id.replace(".webm", ".mp3")).into(),
             )],
         })
         .sized_body(cursor)

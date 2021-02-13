@@ -22,7 +22,18 @@ pub fn toob_dl(form: Form<ToobDl>, mut cookies: Cookies) -> Redirect {
     let the_dir = format!("./dl/{}", sid);
 
     let u = Url::parse(&form.url);
-    if sid != "nope" && u.is_ok() && u.unwrap().domain().unwrap_or("") == "www.youtube.com" {
+        //return Redirect::to("/toob-dl/");
+    let dom = match u {
+        Ok(d) => {
+            match d.domain() {
+                Some(dos) => dos.to_owned(),
+                _ => "".to_owned()
+            }
+        },
+        _ => "".to_owned()
+    };
+
+    if sid != "nope" && (dom == "www.youtube.com" || dom == "youtu.be")  {
         if form.playlist {
             playlist = format!("--yes-playlist");
         } else {
